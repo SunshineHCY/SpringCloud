@@ -22,6 +22,7 @@ public class SpringcloudribbonApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringcloudribbonApplication.class, args);
 	}
+
 	@Bean
 	@LoadBalanced
 	RestTemplate restTemplate() {
