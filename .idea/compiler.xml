@@ -10,6 +10,7 @@
         <module name="cloudService" />
         <module name="springCloud-feign" />
         <module name="springcloud-ribbon" />
+        <module name="zuul" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
       <module name="springCloud-feign" target="1.7" />
       <module name="springcloud-ribbon" target="1.7" />
       <module name="springCloud-ribbon" target="1.7" />
+      <module name="zuul" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
