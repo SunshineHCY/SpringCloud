@@ -62,12 +62,17 @@ public class IPFilter extends ZuulFilter {
 		// 配置本地IP白名单，生产环境可放入数据库或者redis中
 		List<String> ips = new ArrayList<String>();
 		ips.add("172.0.0.1");
+		ips.add("0:0:0:0:0:0:0:1");
 
 		if (!ips.contains(ipAddr)) {
 			logger.info("IP地址校验不通过！！！");
 			ctx.setResponseStatusCode(401);
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseBody("IpAddr is forbidden!");
+		}else{
+			ctx.setResponseStatusCode(401);
+			ctx.setSendZuulResponse(false);
+			ctx.setResponseBody("IpAddr is pass!");
 		}
 		logger.info("IP校验结束。");
 		return null;
