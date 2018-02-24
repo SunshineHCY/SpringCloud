@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IPFilter extends ZuulFilter {
 
 	private Logger logger = LoggerFactory.getLogger(IPFilter.class);
@@ -32,7 +34,7 @@ public class IPFilter extends ZuulFilter {
 
 	@Override
 	public Object run() {
-		RequestContext ctx = RequestContext.getCurrentContext();
+		/*RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
 		logger.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
 		Object accessToken = request.getParameter("token");
@@ -42,14 +44,18 @@ public class IPFilter extends ZuulFilter {
 			ctx.setResponseStatusCode(401);
 			try {
 				ctx.getResponse().getWriter().write("token is empty");
-			}catch (Exception e){}
+			}catch (Exception e){
+				return  e;
+			}
 
 			return null;
 		}
 		logger.info("ok");
 		return null;
-	}
-		/*RequestContext ctx = RequestContext.getCurrentContext();
+	}*/
+
+
+	RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest req = ctx.getRequest();
 		String ipAddr = this.getIpAddr(req);
 		logger.info("请求IP地址为：[{}]", ipAddr);
@@ -63,9 +69,9 @@ public class IPFilter extends ZuulFilter {
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseBody("IpAddr is forbidden!");
 		}
-		logger.info("IP校验通过。");
+		logger.info("IP校验结束。");
 		return null;
-	}*/
+	}
 
 	/**
 	 * 获取Ip地址
