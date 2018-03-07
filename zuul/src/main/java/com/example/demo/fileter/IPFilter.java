@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +59,8 @@ public class IPFilter extends ZuulFilter {
 	RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest req = ctx.getRequest();
 		String ipAddr = this.getIpAddr(req);
+		String ipAddr1 = this.getReallyIp(req);
+
 		logger.info("请求IP地址为：[{}]", ipAddr);
 		// 配置本地IP白名单，生产环境可放入数据库或者redis中
 		List<String> ips = new ArrayList<String>();
@@ -103,5 +106,31 @@ public class IPFilter extends ZuulFilter {
 			ip = request.getRemoteAddr();
 		}
 		return ip;
+	}
+
+
+
+	/**
+	 * 获取真实ip
+	 * @author chenp
+	 * @param request
+	 * @return
+	 */
+	public  String getReallyIp(HttpServletRequest request) {
+		String ip = request.getHeader("X-Forwarded-For");
+		if(!StringUtils.isEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+			//多次反向代理后会有多个ip值，第一个ip才是真实ip
+			int index = ip.indexOf(",");
+			if(index != -1){
+				return ip.substring(0,index);
+			}else{
+				return ip;
+			}
+		}
+		ip = request.getHeader("X-Real-IP");
+		if(!StringUtils.isEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+			return ip;
+		}
+		return request.getRemoteAddr();
 	}
 }
